@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { useState } from 'react';
 import {createTheme,ThemeProvider} from '@mui/material/styles'
-import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = createTheme({
@@ -21,10 +21,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
 
-    <div className="App">
       <Nav settheme={setDarkMode} darkmode={darkMode} theme={theme}/>
-      <Login/>
-    </div>
+    <SignUp/>
+
     </ThemeProvider>
   );
 }
