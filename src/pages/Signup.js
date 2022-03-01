@@ -11,17 +11,19 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { NavLink } from 'react-router-dom';
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-      ForumFeed
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    {'Copyright © '}
+    {/* <Link color="inherit" href="https://mui.com/"> */}
+    ForumFeed:
+    {/* </Link> */}
+    {' '}
+    {new Date().getFullYear()}
+    {'.'}
+  </Typography>
   );
 }
 
@@ -35,6 +37,7 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    
   };
 
   return (
@@ -49,7 +52,7 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -99,12 +102,6 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -116,9 +113,11 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <NavLink to="/login">
+                  <Link>
                   Already have an account? Sign in
-                </Link>
+                  </Link>
+                </NavLink>
               </Grid>
             </Grid>
           </Box>

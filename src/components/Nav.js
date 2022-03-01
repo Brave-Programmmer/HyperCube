@@ -1,24 +1,23 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import Button from "@mui/material/Button";
-import Toolbar from "@mui/material/Toolbar";
-import MenuIcon from "@mui/icons-material/Menu";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { AppBar } from "@mui/material";
-
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Typography,
+  Tooltip,
+  IconButton,
+  Divider,
+  ListItemIcon,
+  MenuItem,
+  Menu,
+  Avatar,
+  Box,
+  Toolbar,
+  AppBar,
+} from "@mui/material";
 function Nav(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -50,7 +49,9 @@ function Nav(props) {
             {/* Brand Name end */}
             <IconButton
               sx={{ ml: 1 }}
-              onClick={()=>{props.settheme(!props.darkmode)}}
+              onClick={() => {
+                props.settheme(!props.darkmode);
+              }}
               color="inherit"
             >
               {props.theme.palette.mode === "dark" ? (
