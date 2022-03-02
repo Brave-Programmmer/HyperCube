@@ -5,7 +5,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import SignUp from "./pages/SignUp";
+import SignUp from "./pages/Signup";
 import SignIn from "./pages/SignIn";
 function App() {
   const [darkMode, setDarkMode] = useState(false);
