@@ -1,7 +1,6 @@
 {
   "name": "fourumfeed",
   "version": "0.1.0",
-   "process.env.CI" : false,
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -22,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
