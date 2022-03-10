@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebsae.config";
+import { Alert } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -43,11 +44,14 @@ export default function SignIn() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
+        console.log(user);
+          // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorMessage);
       });
   };
 
