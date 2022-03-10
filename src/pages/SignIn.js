@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,9 +13,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebsae.config";
-import { Alert } from "@mui/material";
+import { Alert, AlertTitle } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -35,6 +35,11 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const [userName, setUserName] = useState("");
+  onAuthStateChanged(auth, (currentUser) => {
+    setUserName(currentUser.email);
+    console.log(userName);
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,7 +50,7 @@ export default function SignIn() {
         // Signed in
         const user = userCredential.user;
         console.log(user);
-          // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
+        // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
         // ...
       })
       .catch((error) => {
@@ -57,6 +62,14 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs">
+      {userName == null ? (
+        <div></div>
+      ) : (
+        <Alert severity="success">
+          <AlertTitle>Success</AlertTitle>
+          Welcome - <strong>{userName}</strong>
+        </Alert>
+      )}
       <CssBaseline />
       <Box
         sx={{
