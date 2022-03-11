@@ -42,8 +42,6 @@ export default function SignIn() {
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
   
- 
-  });
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
