@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,7 +12,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Navigate, NavLink } from "react-router-dom";
 import { auth } from "../firebsae.config";
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
 function Copyright(props) {
   return (
@@ -32,11 +35,14 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  const [userName, setUserName] = useState('')
+  
+  const [userName, setUserName] = useState("");
   onAuthStateChanged(auth, (currentUser) => {
-    setUserName(currentUser);
-    console.log(userName);
-    Navigate(`/`);
+    if (currentUser.email) {
+      setUserName(currentUser);
+      console.log(userName);
+      Navigate(`/`);
+    }
   });
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -48,7 +54,7 @@ export default function SignUp() {
         // Signed in
         const user = userCredential.user;
         console.log(user);
-        toast.success('🦄 Account created !!!', {
+        toast.success("🦄 Account created !!! Please go to /login", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -56,11 +62,8 @@ export default function SignUp() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          });
-        if(user){
-          // return <Alert onClose={() => {}}>This is a success alert — check it out!</Alert>
-        }
-        // ...
+        });
+        
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -71,7 +74,7 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <ToastContainer/>
+      <ToastContainer />
       <CssBaseline />
       <Box
         sx={{
@@ -89,27 +92,6 @@ export default function SignUp() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 required

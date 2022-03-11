@@ -42,9 +42,11 @@ export default function SignIn() {
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
   onAuthStateChanged(auth, (currentUser) => {
+    if(currentUser.email){
     setUserName(currentUser);
     console.log(userName);
     navigate(`/`);
+    }
   });
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -59,7 +61,7 @@ export default function SignIn() {
         // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
         // ...
         // setTimeout()
-        toast.success(`🦄 Welcome ${userName.email}`, {
+        toast.success(`🦄 Welcome ${user.email}`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
