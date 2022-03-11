@@ -62,7 +62,8 @@ navigate(`/`);
         // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
         // ...
         // setTimeout()
-        toast.success(`🦄 Welcome ${userName.email}`, {
+
+        toast.success(`🦄 Welcome ${user.email}`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
