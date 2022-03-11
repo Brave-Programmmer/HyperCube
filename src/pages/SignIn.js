@@ -56,7 +56,7 @@ export default function SignIn() {
         // ...
         // setTimeout()
        
-    setUserName(currentUser);
+    setUserName(user);
     console.log(userName);
 if(userName){
 navigate(`/`);
