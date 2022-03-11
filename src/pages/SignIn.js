@@ -45,7 +45,7 @@ export default function SignIn() {
     setUserName(currentUser);
     console.log(userName);
 if(userName != null){
-navigate(`/`);
+navigate(`/${userName}`);
 }
  
   });
