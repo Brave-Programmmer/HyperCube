@@ -44,7 +44,7 @@ export default function SignIn() {
   onAuthStateChanged(auth, (currentUser) => {
     setUserName(currentUser);
     console.log(userName);
-if(curentUser){
+if(currentUser){
 navigate(`/`);
 }
  
