@@ -41,12 +41,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
-  onAuthStateChanged(auth, (currentUser) => {
-    setUserName(currentUser);
-    console.log(userName);
-if(currentUser){
-navigate(`/`);
-}
+  
  
   });
   const handleSubmit = (event) => {
