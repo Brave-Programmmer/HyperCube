@@ -1,9 +1,8 @@
-import * as React from "react";
+import {useState} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -11,10 +10,10 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { auth } from "../firebsae.config";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Alert } from "@mui/material";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { toast, ToastContainer } from "react-toastify";
 function Copyright(props) {
   return (
     <Typography
@@ -33,6 +32,12 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
+  const [userName, setUserName] = useState('')
+  onAuthStateChanged(auth, (currentUser) => {
+    setUserName(currentUser);
+    console.log(userName);
+    Navigate(`/`);
+  });
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -43,6 +48,15 @@ export default function SignUp() {
         // Signed in
         const user = userCredential.user;
         console.log(user);
+        toast.success('🦄 Account created !!!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         if(user){
           // return <Alert onClose={() => {}}>This is a success alert — check it out!</Alert>
         }
@@ -57,6 +71,7 @@ export default function SignUp() {
 
   return (
     <Container component="main" maxWidth="xs">
+      <ToastContainer/>
       <CssBaseline />
       <Box
         sx={{
