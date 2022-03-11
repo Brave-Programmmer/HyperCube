@@ -57,7 +57,12 @@ export default function SignIn() {
         // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
         // ...
         // setTimeout()
-
+       
+    setUserName(currentUser);
+    console.log(userName);
+if(userName){
+navigate(`/`);
+}
         toast.success(`🦄 Welcome ${user.email}`, {
           position: "top-right",
           autoClose: 5000,
