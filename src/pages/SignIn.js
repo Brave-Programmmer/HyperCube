@@ -1,23 +1,27 @@
 import { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import {
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Container,
+  Avatar,
+  CssBaseline,
+  Button,
+  Typography,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink } from "react-router-dom";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebsae.config";
-import { Alert, AlertTitle } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate  } from "react-router-dom"
 
 function Copyright(props) {
+
   return (
     <Typography
       variant="body2"
@@ -26,7 +30,6 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      {/* <Link color="inherit" href="https://mui.com/"> */}
       ForumFeed:
       {/* </Link> */} {new Date().getFullYear()}
       {"."}
@@ -35,10 +38,13 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
+  const [toasted, setToasted] = useState(false);
   onAuthStateChanged(auth, (currentUser) => {
-    setUserName(currentUser.email);
+    setUserName(currentUser);
     console.log(userName);
+    navigate(`/`);
   });
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -52,24 +58,37 @@ export default function SignIn() {
         console.log(user);
         // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
         // ...
+        // setTimeout()
+        toast.success(`🦄 Welcome ${userName.email}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
+        toast.error(`Error!!! ${errorMessage}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {}, 1000);
       });
   };
 
   return (
     <Container component="main" maxWidth="xs">
-      {userName == null ? (
-        <div></div>
-      ) : (
-        <Alert severity="success">
-          <AlertTitle>Success</AlertTitle>
-          Welcome - <strong>{userName}</strong>
-        </Alert>
-      )}
+      {userName == null ? <div></div> : <ToastContainer />}
       <CssBaseline />
       <Box
         sx={{
