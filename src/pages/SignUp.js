@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Navigate, NavLink } from "react-router-dom";
+import { Navigate, NavLink,useNavigate } from "react-router-dom";
 import { auth } from "../firebsae.config";
 import {
   createUserWithEmailAndPassword,
@@ -35,13 +35,14 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  
+  const history = useNavigate()
   const [userName, setUserName] = useState("");
   onAuthStateChanged(auth, (currentUser) => {
     if (currentUser.email) {
       setUserName(currentUser);
       console.log(userName);
-      Navigate(`/`);
+      history.push('/')
+
     }
   });
   const handleSubmit = (event) => {
@@ -125,7 +126,7 @@ export default function SignUp() {
           <Grid container justifyContent="flex-end">
             <Grid item>
               <NavLink to="/login">
-                <Link>Already have an account? Sign in</Link>
+                <Link to="/login">Already have an account? Sign in</Link>
               </NavLink>
             </Grid>
           </Grid>

@@ -17,8 +17,8 @@ function App() {
   });
   return (
     <ThemeProvider theme={theme}>
-      <Nav settheme={setDarkMode} darkmode={darkMode} theme={theme} />
       <BrowserRouter>
+      <Nav settheme={setDarkMode} darkmode={darkMode} theme={theme} />
         <Routes>
           <Route path="/signup" exact element={<SignUp />}></Route>
           <Route path="/" exact element={<Home />}></Route>

@@ -23,10 +23,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebsae.config";
 import { Link, useNavigate } from "react-router-dom";
 function Nav(props) {
-  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState("");
   const open = Boolean(anchorEl);
+  const history = useNavigate()
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,7 +37,7 @@ function Nav(props) {
     setUser(user);
   });
   const login_btn = ()=>{
-    navigate('/login')
+    history.push('/login')
   }
   return (
     <>
@@ -158,7 +158,7 @@ function Nav(props) {
                 </Menu>
               </>
             ) : (
-              <Button variant="contained"><Link>Login</Link></Button>
+              <Button variant="contained"><Link to="/login">Login</Link></Button>
             )}
             {/* Appbar Account end */}
           </Toolbar>

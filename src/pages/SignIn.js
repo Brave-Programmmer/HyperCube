@@ -13,12 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Navigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebsae.config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate  } from "react-router-dom"
 
 function Copyright(props) {
 
@@ -38,14 +37,14 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
-  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
+  const history = useNavigate()
   onAuthStateChanged(auth, (currentUser) => {
     if(currentUser.email){
     setUserName(currentUser);
     console.log(userName);
-    navigate(`/`);
+    history.push('/')
     }
   });
 
@@ -67,7 +66,8 @@ export default function SignIn() {
     setUserName(user);
     console.log(userName);
 if(userName){
-navigate(`/`);
+  history.push('/')
+
 }
         toast.success(`🦄 Welcome ${user.email}`, {
           position: "top-right",
@@ -97,6 +97,7 @@ navigate(`/`);
   };
 
   return (
+    
     <Container component="main" maxWidth="xs">
       {userName == null ? <div></div> : <ToastContainer />}
       <CssBaseline />
@@ -155,7 +156,7 @@ navigate(`/`);
             </Grid>
             <Grid item>
               <NavLink to="/signup">
-                <Link>{"Don't have an account? Sign Up"}</Link>
+                <Link to="/signup">{"Don't have an account? Sign Up"}</Link>
               </NavLink>
             </Grid>
           </Grid>
