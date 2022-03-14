@@ -20,7 +20,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Copyright(props) {
-
   return (
     <Typography
       variant="body2"
@@ -39,16 +38,15 @@ function Copyright(props) {
 export default function SignIn() {
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
-  const history = useNavigate()
+  const navigate = useNavigate();
   onAuthStateChanged(auth, (currentUser) => {
-    if(currentUser.email){
-    setUserName(currentUser);
-    console.log(userName);
-    history.push('/')
+    if (currentUser) {
+      setUserName(currentUser);
+      console.log(userName);
+      navigate("/");
     }
   });
 
-  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -59,16 +57,8 @@ export default function SignIn() {
         // Signed in
         const user = userCredential.user;
         console.log(user);
-        // return (<Alert onClose={() => {}}>This is a success alert — check it out!</Alert>)
-        // ...
-        // setTimeout()
-       
-    setUserName(user);
-    console.log(userName);
-if(userName){
-  history.push('/')
-
-}
+        setUserName(user);
+        console.log(userName);
         toast.success(`🦄 Welcome ${user.email}`, {
           position: "top-right",
           autoClose: 5000,
@@ -97,7 +87,6 @@ if(userName){
   };
 
   return (
-    
     <Container component="main" maxWidth="xs">
       {userName == null ? <div></div> : <ToastContainer />}
       <CssBaseline />
@@ -109,7 +98,7 @@ if(userName){
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -135,10 +124,6 @@ if(userName){
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
           />
           <Button
             type="submit"

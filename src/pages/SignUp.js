@@ -35,14 +35,13 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  const history = useNavigate()
+  const navigate = useNavigate()
   const [userName, setUserName] = useState("");
   onAuthStateChanged(auth, (currentUser) => {
-    if (currentUser.email) {
+    if (currentUser) {
       setUserName(currentUser);
       console.log(userName);
-      history.push('/')
-
+      navigate('/')
     }
   });
   const handleSubmit = (event) => {
@@ -54,17 +53,7 @@ export default function SignUp() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
-        toast.success("🦄 Account created !!! Please go to /login", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        
+        console.log(user);        
       })
       .catch((error) => {
         const errorCode = error.code;

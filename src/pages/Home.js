@@ -9,7 +9,7 @@ function Home() {
     if(user){
       toast.info(`🦄 Welcome ${user.email}`, {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
