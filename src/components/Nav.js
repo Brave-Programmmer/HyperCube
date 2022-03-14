@@ -23,7 +23,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebsae.config";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Circle, Home, Subscriptions, TrendingDown, TrendingUp } from "@mui/icons-material";
+import { Circle, Home, Info, Subscriptions, TrendingDown, TrendingUp } from "@mui/icons-material";
 function Nav(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState("");
@@ -97,18 +97,25 @@ function Nav(props) {
                   anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                 >
                   <MenuItem>
-                    <Home sx={{marginRight:'10px'}}/> Home
+                
+                    <Home sx={{marginRight:'10px'}}/> <Link to="/">Home</Link>
                   </MenuItem>
                   <Divider />
                   <MenuItem>
-                  <TrendingUp sx={{marginRight:'10px'}}/> Trending
+                  <TrendingUp sx={{marginRight:'10px'}}/> <Link to="/Trending">Trending</Link>
                   </MenuItem>
                   <Divider />
                   <MenuItem>
                     <ListItemIcon>
                       <Subscriptions/>
                     </ListItemIcon>
-                    Subscription
+                    <Link to="/Subscriptions">Subscriptions</Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Info/> 
+                    </ListItemIcon>
+                    <Link to="/about">About</Link>
                   </MenuItem>
                 </Menu>
             </IconButton>
@@ -238,7 +245,6 @@ function Nav(props) {
               </>
             ) : (
               <Button variant="contained">
-                <Link to="/login">Login</Link>
               </Button>
             )}
             {/* Appbar Account end */}

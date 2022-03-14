@@ -8,6 +8,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
+import Trending from "./pages/Trending";
+import Subscriptions from "./pages/Subscriptions";
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = createTheme({
@@ -23,6 +25,8 @@ function App() {
           <Route path="/signup" exact element={<SignUp />}></Route>
           <Route path="/" exact element={<Home />}></Route>
           <Route path="/login" exact element={<SignIn />}></Route>
+          <Route path="/Trending" exact element={<Trending />}></Route>
+          <Route path="/Subscriptions" exact element={<Subscriptions />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
