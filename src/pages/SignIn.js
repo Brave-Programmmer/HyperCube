@@ -43,6 +43,17 @@ export default function SignIn() {
     if (currentUser) {
       setUserName(currentUser);
       console.log(userName);
+      if(currentUser.email){
+        toast.success(`🦄 Welcome ${currentUser.email}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
       navigate("/");
     }
   });
@@ -59,15 +70,8 @@ export default function SignIn() {
         console.log(user);
         setUserName(user);
         console.log(userName);
-        toast.success(`🦄 Welcome ${user.email}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+   
+      
       })
       .catch((error) => {
         const errorCode = error.code;

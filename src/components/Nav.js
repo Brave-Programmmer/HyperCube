@@ -98,30 +98,30 @@ function Nav(props) {
                 >
                   <MenuItem>
                 
-                    <Home sx={{marginRight:'10px'}}/> <Link to="/">Home</Link>
+                    <Home sx={{marginRight:'10px'}}/> <Link to="/"><Typography color={props.darkMode == true  ?'white':'darkgray'}>Home</Typography></Link>
                   </MenuItem>
                   <Divider />
                   <MenuItem>
-                  <TrendingUp sx={{marginRight:'10px'}}/> <Link to="/Trending">Trending</Link>
+                  <TrendingUp sx={{marginRight:'10px'}}/> <Link to="/Trending"><Typography color={props.darkMode == true  ?'white':'darkgray'}>Trending</Typography></Link>
                   </MenuItem>
                   <Divider />
                   <MenuItem>
                     <ListItemIcon>
                       <Subscriptions/>
                     </ListItemIcon>
-                    <Link to="/Subscriptions">Subscriptions</Link>
+                    <Link to="/Subscriptions"><Typography color={props.darkMode == true  ?'white':'darkgray'}>Subscriptions</Typography></Link>
                   </MenuItem>
                   <MenuItem>
                     <ListItemIcon>
                       <Info/> 
                     </ListItemIcon>
-                    <Link to="/about">About</Link>
+                    <Link to="/about"><Typography color={props.darkMode == true  ?'white':'darkgray'}>About</Typography></Link>
                   </MenuItem>
                 </Menu>
             </IconButton>
             {/* Brand Name starts */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              ForumFeed
+              HyperCube
             </Typography>
             {/* Brand Name end */}
             <IconButton
@@ -131,7 +131,7 @@ function Nav(props) {
               }}
               color="inherit"
             >
-              {props.theme.palette.mode === "dark" ? (
+              {props.darkMode === "dark" ? (
                 <Brightness7Icon />
               ) : (
                 <Brightness4Icon />
@@ -245,6 +245,7 @@ function Nav(props) {
               </>
             ) : (
               <Button variant="contained">
+                <Link to="/login"><Typography color={props.darkMode == true ?'white':'black'}>Login</Typography></Link>
               </Button>
             )}
             {/* Appbar Account end */}
