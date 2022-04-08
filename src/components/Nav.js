@@ -23,9 +23,17 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebsae.config";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Circle, Home, Info, Subscriptions, TrendingDown, TrendingUp } from "@mui/icons-material";
+import {
+  Circle,
+  Home,
+  Info,
+  Subscriptions,
+  TrendingDown,
+  TrendingUp,
+} from "@mui/icons-material";
 function Nav(props) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElnav, setAnchorElnav] = useState(null);
   const [user, setUser] = useState("");
   const open = Boolean(anchorEl);
   const navopen = Boolean(anchorEl);
@@ -35,6 +43,12 @@ function Nav(props) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleClickNav = (event) => {
+    setAnchorElnav(event.currentTarget);
+  };
+  const handleCloseNav = () => {
+    setAnchorElnav(null);
   };
   onAuthStateChanged(auth, (user) => {
     setUser(user);
@@ -53,71 +67,96 @@ function Nav(props) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              aria-haspopup="true"
             >
               <MenuIcon
-                onClick={handleClick}
-                size="small"
                 aria-controls={navopen ? "account-menu" : undefined}
-                aria-haspopup="true"
+                onClick={handleClickNav}
                 aria-expanded={navopen ? "true" : undefined}
+                size="small"
               />
-                  <Menu
-                  anchorEl={anchorEl}
-                  id="account-menu"
-                  open={navopen}
-                  onClose={handleClose}
-                  onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                      mt: 1.5,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        mr: -0.5,
-                        ml: 1,
-                      },
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        left: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
+              <Menu
+                anchorEl={anchorElnav}
+                id="account-menu"
+                open={navopen}
+                onClose={handleCloseNav}
+                onClick={handleCloseNav}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      mr: -0.5,
+                      ml: 1,
                     },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  <MenuItem>
-                
-                    <Home sx={{marginRight:'10px'}}/> <Link to="/"><Typography color={props.darkMode == true  ?'white':'darkgray'}>Home</Typography></Link>
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem>
-                  <TrendingUp sx={{marginRight:'10px'}}/> <Link to="/Trending"><Typography color={props.darkMode == true  ?'white':'darkgray'}>Trending</Typography></Link>
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem>
-                    <ListItemIcon>
-                      <Subscriptions/>
-                    </ListItemIcon>
-                    <Link to="/Subscriptions"><Typography color={props.darkMode == true  ?'white':'darkgray'}>Subscriptions</Typography></Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <Info/> 
-                    </ListItemIcon>
-                    <Link to="/about"><Typography color={props.darkMode == true  ?'white':'darkgray'}>About</Typography></Link>
-                  </MenuItem>
-                </Menu>
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      left: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem>
+                  <Home sx={{ marginRight: "10px" }} />{" "}
+                  <Link to="/">
+                    <Typography
+                      color={props.darkMode == true ? "white" : "darkgray"}
+                    >
+                      Home
+                    </Typography>
+                  </Link>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <TrendingUp sx={{ marginRight: "10px" }} />{" "}
+                  <Link to="/Trending">
+                    <Typography
+                      color={props.darkMode == true ? "white" : "darkgray"}
+                    >
+                      Trending
+                    </Typography>
+                  </Link>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <ListItemIcon>
+                    <Subscriptions />
+                  </ListItemIcon>
+                  <Link to="/Subscriptions">
+                    <Typography
+                      color={props.darkMode == true ? "white" : "darkgray"}
+                    >
+                      Subscriptions
+                    </Typography>
+                  </Link>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <Info />
+                  </ListItemIcon>
+                  <Link to="/about">
+                    <Typography
+                      color={props.darkMode == true ? "white" : "darkgray"}
+                    >
+                      About
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              </Menu>
             </IconButton>
             {/* Brand Name starts */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -245,7 +284,13 @@ function Nav(props) {
               </>
             ) : (
               <Button variant="contained">
-                <Link to="/login"><Typography color={props.darkMode == true ?'white':'black'}>Login</Typography></Link>
+                <Link to="/login">
+                  <Typography
+                    color={props.darkMode == true ? "white" : "black"}
+                  >
+                    Login
+                  </Typography>
+                </Link>
               </Button>
             )}
             {/* Appbar Account end */}

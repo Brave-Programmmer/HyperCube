@@ -10,6 +10,7 @@ import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import Trending from "./pages/Trending";
 import Subscriptions from "./pages/Subscriptions";
+import Video from "./pages/Video";
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = createTheme({
@@ -27,6 +28,7 @@ function App() {
           <Route path="/login" exact element={<SignIn />}></Route>
           <Route path="/Trending" exact element={<Trending />}></Route>
           <Route path="/Subscriptions" exact element={<Subscriptions />}></Route>
+          <Route path="/Video/:id" exact element={<Video />}></Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
