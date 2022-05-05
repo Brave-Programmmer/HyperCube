@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   TextField,
   FormControlLabel,
@@ -15,9 +15,11 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate, NavLink } from "react-router-dom";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebsae.config";
+import { auth, firestore } from "../firebsae.config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "../context/User/UserContext";
+import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 
 function Copyright(props) {
   return (
@@ -36,6 +38,7 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
+  const context = useContext(UserContext);
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
   const navigate = useNavigate();
@@ -43,7 +46,7 @@ export default function SignIn() {
     if (currentUser) {
       setUserName(currentUser);
       console.log(userName);
-      if(currentUser.email){
+      if (currentUser.email) {
         toast.success(`🦄 Welcome ${currentUser.email}`, {
           position: "top-right",
           autoClose: 5000,
@@ -70,8 +73,10 @@ export default function SignIn() {
         console.log(user);
         setUserName(user);
         console.log(userName);
-   
-      
+        const q = query(collection(firestore, "channel"), where("email", "==", email));
+        const ch_names = getDocs(q)
+        const ch_name = ch_names.doc.data()
+        context.Setdata(email, ch_name.ch_name);
       })
       .catch((error) => {
         const errorCode = error.code;

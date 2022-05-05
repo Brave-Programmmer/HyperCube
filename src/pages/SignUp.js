@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,13 +10,15 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Navigate, NavLink,useNavigate } from "react-router-dom";
-import { auth } from "../firebsae.config";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
+import { auth, firestore } from "../firebsae.config";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
+import { addDoc, collection } from "firebase/firestore";
+import UserContext from "../context/User/UserContext";
 function Copyright(props) {
   return (
     <Typography
@@ -35,31 +37,39 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  const navigate = useNavigate()
+  const context = useContext(UserContext);
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   onAuthStateChanged(auth, (currentUser) => {
     if (currentUser) {
       setUserName(currentUser);
       console.log(userName);
-      navigate('/')
+      navigate("/");
     }
   });
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
+    const ch_name = data.get("ch_name");
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);        
+        console.log(user);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage);
       });
+    const ch_collection_ref = collection(firestore, "channel");
+    const add_ch = await addDoc(ch_collection_ref, {
+      ch_name: ch_name,
+      email: email,
+    });
+    context.Setdata(email, ch_name);
   };
 
   return (
@@ -101,6 +111,15 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="ch_name"
+                label="Enter Your Channel name"
+                name="ch_name"
               />
             </Grid>
           </Grid>

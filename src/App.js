@@ -8,9 +8,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
-import Trending from "./pages/Trending";
+import Admin from "./pages/Admin";
+
 import Subscriptions from "./pages/Subscriptions";
-import Video from "./pages/Video";
+import Videos from "./pages/Videos";
+import UserState from "./context/User/UserState";
 function App() {
   const [darkMode, setDarkMode] = useState(false);
   const theme = createTheme({
@@ -21,15 +23,19 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <Nav settheme={setDarkMode} darkmode={darkMode} theme={theme} />
-        <Routes>
-          <Route path="/signup" exact element={<SignUp />}></Route>
-          <Route path="/" exact element={<Home />}></Route>
-          <Route path="/login" exact element={<SignIn />}></Route>
-          <Route path="/Trending" exact element={<Trending />}></Route>
-          <Route path="/Subscriptions" exact element={<Subscriptions />}></Route>
-          <Route path="/Video/:id" exact element={<Video />}></Route>
-        </Routes>
+        <Nav settheme={setDarkMode} darkmode={darkMode} theme={theme} />
+          <Routes>
+            <Route path="/signup" exact element={<SignUp />}></Route>
+            <Route path="/" exact element={<Home />}></Route>
+            <Route path="/login" exact element={<SignIn />}></Route>
+            <Route
+              path="/Subscriptions"
+              exact
+              element={<Subscriptions />}
+            ></Route>
+            <Route path="/admin" exact element={<Admin />}></Route>
+            <Route path="/Video/:id" exact element={<Videos />}></Route>
+          </Routes>
       </BrowserRouter>
     </ThemeProvider>
   );
