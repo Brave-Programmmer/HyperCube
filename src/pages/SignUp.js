@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,7 +18,6 @@ import {
 } from "firebase/auth";
 import { toast, ToastContainer } from "react-toastify";
 import { addDoc, collection } from "firebase/firestore";
-import UserContext from "../context/User/UserContext";
 function Copyright(props) {
   return (
     <Typography
@@ -37,7 +36,6 @@ function Copyright(props) {
 }
 
 export default function SignUp() {
-  const context = useContext(UserContext);
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   onAuthStateChanged(auth, (currentUser) => {
@@ -65,11 +63,11 @@ export default function SignUp() {
         console.log(errorMessage);
       });
     const ch_collection_ref = collection(firestore, "channel");
-    const add_ch = await addDoc(ch_collection_ref, {
+    await addDoc(ch_collection_ref, {
       ch_name: ch_name,
       email: email,
+      subs:0
     });
-    context.Setdata(email, ch_name);
   };
 
   return (

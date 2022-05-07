@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   TextField,
   FormControlLabel,
@@ -18,7 +18,6 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, firestore } from "../firebsae.config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import UserContext from "../context/User/UserContext";
 import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 
 function Copyright(props) {
@@ -38,7 +37,6 @@ function Copyright(props) {
 }
 
 export default function SignIn() {
-  const context = useContext(UserContext);
   const [userName, setUserName] = useState("");
   const [toasted, setToasted] = useState(false);
   const navigate = useNavigate();
@@ -73,10 +71,7 @@ export default function SignIn() {
         console.log(user);
         setUserName(user);
         console.log(userName);
-        const q = query(collection(firestore, "channel"), where("email", "==", email));
-        const ch_names = getDocs(q)
-        const ch_name = ch_names.doc.data()
-        context.Setdata(email, ch_name.ch_name);
+        
       })
       .catch((error) => {
         const errorCode = error.code;
