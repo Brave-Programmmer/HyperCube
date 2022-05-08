@@ -13,6 +13,7 @@ import {
   Dialog,
   DialogTitle,
   List,
+  TextField,
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -209,7 +210,28 @@ function Admin() {
               x
             </Button>
           </Stack>
-          <List sx={{ pt: 0 }}></List>
+          <List
+            sx={{
+              pt: 0,
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <TextField
+              variant="outlined"
+              color="primary"
+              label="Enter the title"
+            />
+            <TextField
+              variant="outlined"
+              color="primary"
+              label="Enter the slug"
+            />
+            <input
+              type="file"
+            />
+          </List>
         </Dialog>
       </Box>
     </>
