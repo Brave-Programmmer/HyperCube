@@ -1,25 +1,62 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  Card,
+  CardContent,
+  CardActions,
+  CardMedia,
+  CardActionArea,
+  Grid,
+  useMediaQuery,
+  Dialog,
+  DialogTitle,
+  List,
+} from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, firestore } from "../firebsae.config";
 
 function Admin() {
+  const matches = useMediaQuery("(max-width:860px)");
+  const [email, setEmail] = useState("");
   const [userData, setUserData] = useState();
-  const [loading, setLoading] = useState(true)
+  const [videoData, setVideoData] = useState();
+  const [loading, setLoading] = useState(true);
+  const [videoloading, setVideoloading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(!open);
+  };
   // const [user, setUser] = useState("");
+  useEffect(async () => {
+    const video_query = query(
+      collection(firestore, "videos"),
+      where("auth", "==", email)
+    );
+    const videos = await getDocs(video_query);
+    console.log(videos.docs.map((doc) => ({ ...doc.data() })));
+    setVideoData(videos.docs.map((doc) => ({ ...doc.data() })));
+    if (videoData != null) {
+      setVideoloading(false);
+    }
+  }, [loading == false]);
+
   onAuthStateChanged(auth, async (user) => {
-    // setUser(user);
+    setEmail(user.email);
     const q = query(
       collection(firestore, "channel"),
       where("email", "==", user.email)
     );
     const ch_names = await getDocs(q);
     setUserData(ch_names.docs.map((doc) => ({ ...doc.data() })));
-    if(userData != null){
-      setLoading(false)
-    }else{
-      setLoading(true)
+    if (userData != null) {
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
   });
 
@@ -37,33 +74,143 @@ function Admin() {
               borderRadius: "10px",
             }}
           >
-            {loading == false ? userData.map((doc) => {
-              return (
-                <Box>
-                  <Typography>{doc.ch_name}</Typography>
-                  <Typography>{doc.subs}</Typography>
-                </Box>
-              );
-            }):<h4>Loading</h4>}
-            <Box>
-              <Button color="error" variant="contained">
-                Subscribe
-              </Button>
-            </Box>
+            {loading == false ? (
+              userData.map((doc) => {
+                return (
+                  <>
+                    <Box>
+                      <Typography>{doc.ch_name}</Typography>
+                      <Typography>{doc.subs}</Typography>
+                    </Box>
+                    <Box>
+                      <Button
+                        color="error"
+                        variant="contained"
+                        sx={{ marginTop: "20px", marginLeft: "39px" }}
+                        onClick={() => {
+                          handleClickOpen();
+                        }}
+                      >
+                        Create
+                      </Button>
+                    </Box>
+                  </>
+                );
+              })
+            ) : (
+              <h4>Loading</h4>
+            )}
           </Stack>
         </Box>
+
         <Box sx={{ width: "100%" }}>
           <Stack
             direction="row"
             sx={{
               justifyContent: "space-between",
               margin: "20px",
-              backgroundColor: "rgba(0,0,0,0.2)",
               padding: "20px",
               borderRadius: "10px",
+              backgroundColor: "rgba(0,0,0,0.2)",
             }}
-          ></Stack>
+          >
+            <Grid container spacing={2} direction="column">
+              {videoloading == false ? (
+                videoData.map((doc) => {
+                  return (
+                    <>
+                      <Grid item sm={matches ? "2" : "8"}>
+                        <Card sx={{ maxWidth: 345 }}>
+                          <CardActionArea>
+                            <CardMedia
+                              component="img"
+                              height="200"
+                              image={`${doc.thumbnail}`}
+                              alt="green iguana"
+                            />
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                              >
+                                {doc.title}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                {/* desc here */}
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                          <CardActions>
+                            <Link to={`/Video/${doc.slug}`}>
+                              <Button size="small" color="primary">
+                                Play
+                              </Button>
+                            </Link>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                      <Grid item sm={matches ? "2" : "8"}>
+                        <Card sx={{ maxWidth: 345 }}>
+                          <CardActionArea>
+                            <CardMedia
+                              component="img"
+                              height="200"
+                              image={`${doc.thumbnail}`}
+                              alt="green iguana"
+                            />
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                              >
+                                {doc.title}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                {/* desc here */}
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                          <CardActions>
+                            <Link to={`/Video/${doc.slug}`}>
+                              <Button size="small" color="primary">
+                                Play
+                              </Button>
+                            </Link>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    </>
+                  );
+                })
+              ) : (
+                <h1>Loading</h1>
+              )}
+            </Grid>
+          </Stack>
         </Box>
+        <Dialog open={open}>
+          <Stack direction="row">
+            <DialogTitle sx={{ marginRight: "100px" }}>
+              Create Video
+            </DialogTitle>
+            <Button
+              onClick={() => {
+                handleClickOpen();
+              }}
+            >
+              x
+            </Button>
+          </Stack>
+          <List sx={{ pt: 0 }}></List>
+        </Dialog>
       </Box>
     </>
   );
