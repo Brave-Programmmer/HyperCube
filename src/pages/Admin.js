@@ -17,9 +17,10 @@ import {
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, firestore } from "../firebsae.config";
+import { auth, firestore, storage } from "../firebsae.config";
 
 function Admin() {
   const matches = useMediaQuery("(max-width:860px)");
@@ -29,8 +30,16 @@ function Admin() {
   const [loading, setLoading] = useState(true);
   const [videoloading, setVideoloading] = useState(true);
   const [open, setOpen] = useState(false);
+  const [file, setFile] = useState();
   const handleClickOpen = () => {
     setOpen(!open);
+  };
+  const onFileChange = (e) => {
+    const fileRef = e.target[0].file[0];
+    const storageRef = ref(storage, `/file/Videos/${fileRef}`);
+    uploadBytesResumable(storageRef, file).then((snapshot) => {
+      console.log("Uploaded a blob or file!");
+    });
   };
   // const [user, setUser] = useState("");
   useEffect(async () => {
@@ -218,19 +227,33 @@ function Admin() {
               flexDirection: "column",
             }}
           >
-            <TextField
-              variant="outlined"
-              color="primary"
-              label="Enter the title"
-            />
-            <TextField
-              variant="outlined"
-              color="primary"
-              label="Enter the slug"
-            />
-            <input
-              type="file"
-            />
+            <form onSubmit={() => {}}>
+              <TextField
+                variant="outlined"
+                color="primary"
+                label="Enter the title"
+              />
+              <TextField
+                variant="outlined"
+                color="primary"
+                label="Enter the slug"
+              />
+              <label className="file">
+                <input
+                  type="file"
+                  id="file"
+                  className="custom-file-input"
+                  aria-label="File browser example"
+                  onChange={(e) => {
+                    onFileChange(e);
+                  }}
+                />
+                <span className="file-custom"></span>
+              </label>
+              <Button color="error" variant="contained">
+                Create
+              </Button>
+            </form>
           </List>
         </Dialog>
       </Box>

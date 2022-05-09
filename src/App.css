@@ -1,3 +1,28 @@
+.custom-file-input {
+  color: transparent;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Upload Video';
+  color: #fff;
+  display: inline-block;
+  background: #1976d2;
+  border-radius: 3px;
+  padding: 10px 10px;
+  outline: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+}
+/* .custom-file-input:hover::before {
+} */
+.custom-file-input:active {
+  outline: 0;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); 
+}
 .App {
   text-align: center;
 }
