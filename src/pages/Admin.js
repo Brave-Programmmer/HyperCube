@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { auth, firestore, storage } from "../firebsae.config";
@@ -40,6 +40,35 @@ function Admin() {
     uploadBytesResumable(storageRef, file).then((snapshot) => {
       console.log("Uploaded a blob or file!");
     });
+  };
+  const [progress, setProgress] = useState(0);
+  const formHandler = (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadFiles(file);
+  };
+
+  const uploadFiles = (file) => {
+    //
+    if (!file) return;
+    const sotrageRef = ref(storage, `files/${file.name}`);
+    const uploadTask = uploadBytesResumable(sotrageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(prog);
+      },
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+        });
+      }
+    );
   };
   // const [user, setUser] = useState("");
   useEffect(async () => {
@@ -227,32 +256,36 @@ function Admin() {
               flexDirection: "column",
             }}
           >
-            <form onSubmit={() => {}}>
-              <TextField
-                variant="outlined"
-                color="primary"
-                label="Enter the title"
-              />
-              <TextField
-                variant="outlined"
-                color="primary"
-                label="Enter the slug"
-              />
-              <label className="file">
-                <input
-                  type="file"
-                  id="file"
-                  className="custom-file-input"
-                  aria-label="File browser example"
-                  onChange={(e) => {
-                    onFileChange(e);
-                  }}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const data = new FormData(e.currentTarget);
+                const email = data.get("title");
+                const password = data.get("slug");
+              }}
+            >
+              <Stack direction="column">
+                <TextField
+                  variant="outlined"
+                  color="primary"
+                  label="Enter the title"
+                  name="title"
                 />
-                <span className="file-custom"></span>
-              </label>
-              <Button color="error" variant="contained">
-                Create
-              </Button>
+                <TextField
+                  variant="outlined"
+                  color="primary"
+                  label="Enter the slug"
+                  name="slug"
+                />
+                <form onSubmit={formHandler}>
+                  <input type="file" className="input" />
+                  <button type="submit">Upload</button>
+                  <h2>Uploading done {progress}%</h2>
+                </form>
+                <Button color="error" variant="contained">
+                  Create
+                </Button>
+              </Stack>
             </form>
           </List>
         </Dialog>
