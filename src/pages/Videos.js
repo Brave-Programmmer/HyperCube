@@ -36,7 +36,9 @@ function Videos() {
               backgroundColor: "rgba(0,0,0,0.2)",
               padding: "20px",
               borderRadius: "10px",
+              
             }}
+
           >
             <Box>
               <Typography>Brave Programmer</Typography>
