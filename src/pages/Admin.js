@@ -273,25 +273,10 @@ function Admin() {
                     setFile(files);
                     const sotrageRef = ref(storage, `/Videos/${files[0].name}`);
                     const uploadTask = uploadBytesResumable(sotrageRef, files);
-                    uploadTask.on(
-                      "state_changed",
-                      (snapshot) => {
-                        const prog = Math.round(
-                          (snapshot.bytesTransferred / snapshot.totalBytes) *
-                            100
-                        );
-                        setProgress(prog);
-                      },
-                      (error) => console.log(error),
-                      () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then(
-                          (downloadURL) => {
-                            console.log("File available at", downloadURL);
-                            
-                            setUrl(downloadURL);
-                           console.log(url); 
-                          }
-                        );
+                    console.log(uploadTask.snapshot.ref);
+                    getDownloadURL(uploadTask.snapshot.ref).then(
+                      (downloadURL) => {
+                        setUrl(downloadURL);
                       }
                     );
                   }}
@@ -309,23 +294,9 @@ function Admin() {
                       `/Thumbnails/${files[0].name}`
                     );
                     const uploadTask = uploadBytesResumable(sotrageRef, files);
-                    uploadTask.on(
-                      "state_changed",
-                      (snapshot) => {
-                        const prog = Math.round(
-                          (snapshot.bytesTransferred / snapshot.totalBytes) *
-                            100
-                        );
-                        setProgress(prog);
-                      },
-                      (error) => console.log(error),
-                      () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then(
-                          (downloadURL) => {
-                            console.log("File available at", downloadURL);
-                            setThumbnailUrl(downloadURL);
-                          }
-                        );
+                    getDownloadURL(uploadTask.snapshot.ref).then(
+                      (downloadURL) => {
+                        setThumbnailUrl(downloadURL);
                       }
                     );
                   }}
