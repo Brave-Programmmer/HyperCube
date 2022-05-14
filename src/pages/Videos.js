@@ -28,7 +28,7 @@ function Videos() {
       <Box sx={{ width: "100%", height: "100%" }}>
         <Video data={Blogs} />
         <Box sx={{ width: "100%" }}>
-          <Stack
+          {/* <Stack
             direction="row"
             sx={{
               justifyContent: "space-between",
@@ -41,15 +41,11 @@ function Videos() {
 
           >
             <Box>
-              <Typography>Brave Programmer</Typography>
-              <Typography>20.1M</Typography>
+              <Typography>Channel Name: Brave Programmer</Typography>
+              
             </Box>
-            <Box>
-              <Button color="error" variant="contained">
-                Subscribe
-              </Button>
-            </Box>
-          </Stack>
+           
+          </Stack> */}
         </Box>
       </Box>
     </>

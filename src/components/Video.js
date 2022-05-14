@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 function Video(props) {
-  console.log(props);
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     setTimeout(() => {
@@ -14,11 +13,11 @@ function Video(props) {
       <Box>
         <Box>
           {loading == false ? props.data.map((data, index) => {
-            console.log(props.data[0].videoURL);
+            console.log(data.videoUrl);
             return (
               <div key={index} style={{height:'90vh'}}>
                 <video width={"100%"} height={"100%"} controls>
-                  <source src={props.data[0].videoURL} type="video/mp4" />
+                  <source src={data.videoUrl} type="video/mp4" />
                 </video>
               </div>
             );

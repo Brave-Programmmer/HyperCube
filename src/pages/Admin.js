@@ -159,40 +159,6 @@ function Admin() {
                           </CardActions>
                         </Card>
                       </Grid>
-                      <Grid item sm={matches ? "2" : "8"}>
-                        <Card sx={{ maxWidth: 345 }}>
-                          <CardActionArea>
-                            <CardMedia
-                              component="img"
-                              height="200"
-                              image={`${doc.thumbnail}`}
-                              alt="green iguana"
-                            />
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="div"
-                              >
-                                {doc.title}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                {/* desc here */}
-                              </Typography>
-                            </CardContent>
-                          </CardActionArea>
-                          <CardActions>
-                            <Link to={`/Video/${doc.slug}`}>
-                              <Button size="small" color="primary">
-                                Play
-                              </Button>
-                            </Link>
-                          </CardActions>
-                        </Card>
-                      </Grid>
                     </>
                   );
                 })
@@ -229,17 +195,19 @@ function Admin() {
                 const data = new FormData(e.currentTarget);
                 const title = data.get("title");
                 const slug = data.get("slug");
-                console.log(title);
-                console.log(slug);
-                console.log(url);
-                console.log(email);
-                console.log(ThumbnailUrl);
+                const video_url = data.get("video_url");
+                const thumbnail_url = data.get("thumbnail_url");
+                // console.log(title);
+                // console.log(slug);
+                // console.log(url);
+                // console.log(email);
+                // console.log(ThumbnailUrl);
                 addDoc(collection(firestore, "videos"), {
                   auth: email,
                   slug: slug,
                   title: title,
-                  videoUrl: url,
-                  thumbnail: ThumbnailUrl,
+                  videoUrl: video_url,
+                  thumbnail: thumbnail_url,
                 })
                   .then(() => {
                     console.log("done!!!");
@@ -262,14 +230,13 @@ function Admin() {
                   label="Enter the slug"
                   name="slug"
                 />
-
-                <input
+                {/* <input
                   type="file"
                   name="video"
                   onChange={(e) => {
-                    const files = e.target.files;
+                    const files = e.target[0].files[0];
                     console.log("The file is:", files);
-                    console.log(files[0].name);
+                    // console.log(files[0].name);
                     setFile(files);
                     const sotrageRef = ref(storage, `/Videos/${files[0].name}`);
                     const uploadTask = uploadBytesResumable(sotrageRef, files);
@@ -279,15 +246,16 @@ function Admin() {
                         setUrl(downloadURL);
                       }
                     );
+                    console.log(url);
                   }}
                 />
                 <input
                   type="file"
                   name="video"
                   onChange={(e) => {
-                    const files = e.target.files;
+                    const files = e.target[0].files[0];
                     console.log("The file is:", files);
-                    console.log(files[0].name);
+                    // console.log(files[0].name);
                     setThumbnail(files);
                     const sotrageRef = ref(
                       storage,
@@ -299,9 +267,21 @@ function Admin() {
                         setThumbnailUrl(downloadURL);
                       }
                     );
+                    console.log(ThumbnailUrl);
                   }}
+                /> */}
+                <TextField
+                  variant="outlined"
+                  color="primary"
+                  label="Enter the Video URL"
+                  name="video_url"
+                />{" "}
+                <TextField
+                  variant="outlined"
+                  color="primary"
+                  label="Enter the Thumbnail URL"
+                  name="thumbnail_url"
                 />
-
                 <button type="submit">Create</button>
               </Stack>
             </form>
