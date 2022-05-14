@@ -16,7 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -31,6 +31,11 @@ function Admin() {
   const [videoloading, setVideoloading] = useState(true);
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState();
+  const [Thumbnail, setThumbnail] = useState();
+  const [progress, setProgress] = useState(0);
+  const [url, setUrl] = useState();
+  const [ThumbnailUrl, setThumbnailUrl] = useState();
+
   const handleClickOpen = () => {
     setOpen(!open);
   };
@@ -219,11 +224,29 @@ function Admin() {
             }}
           >
             <form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 const data = new FormData(e.currentTarget);
-                const email = data.get("title");
-                const password = data.get("slug");
+                const title = data.get("title");
+                const slug = data.get("slug");
+                console.log(title);
+                console.log(slug);
+                console.log(url);
+                console.log(email);
+                console.log(ThumbnailUrl);
+                addDoc(collection(firestore, "videos"), {
+                  auth: email,
+                  slug: slug,
+                  title: title,
+                  videoUrl: url,
+                  thumbnail: ThumbnailUrl,
+                })
+                  .then(() => {
+                    console.log("done!!!");
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
               }}
             >
               <Stack direction="column">
@@ -239,33 +262,76 @@ function Admin() {
                   label="Enter the slug"
                   name="slug"
                 />
-                <form
-                  style={{ marginBottom: "10px" }}
-                  onSubmit={() => {
-                    if (file != null) {
-                    }
+
+                <input
+                  type="file"
+                  name="video"
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    console.log("The file is:", files);
+                    console.log(files[0].name);
+                    setFile(files);
+                    const sotrageRef = ref(storage, `/Videos/${files[0].name}`);
+                    const uploadTask = uploadBytesResumable(sotrageRef, files);
+                    uploadTask.on(
+                      "state_changed",
+                      (snapshot) => {
+                        const prog = Math.round(
+                          (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100
+                        );
+                        setProgress(prog);
+                      },
+                      (error) => console.log(error),
+                      () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then(
+                          (downloadURL) => {
+                            console.log("File available at", downloadURL);
+                            
+                            setUrl(downloadURL);
+                           console.log(url); 
+                          }
+                        );
+                      }
+                    );
                   }}
-                >
-                  <input
-                    type="file"
-                    name="video"
-                    onChange={(e) => {
-                      const files = e.target.files;
-                      console.log("The file is:", files);
-                      console.log(files[0].name);
-                      setFile(files);
-                      const sotrageRef = ref(storage, `/Videos/${files[0].name}`);
-                      uploadBytesResumable(sotrageRef, files);
-                      
-                    }}
-                  />
-                  <Button color="error" variant="contained">
-                    Upload
-                  </Button>
-                </form>
-                <Button color="error" variant="contained">
-                  Create
-                </Button>
+                />
+                <input
+                  type="file"
+                  name="video"
+                  onChange={(e) => {
+                    const files = e.target.files;
+                    console.log("The file is:", files);
+                    console.log(files[0].name);
+                    setThumbnail(files);
+                    const sotrageRef = ref(
+                      storage,
+                      `/Thumbnails/${files[0].name}`
+                    );
+                    const uploadTask = uploadBytesResumable(sotrageRef, files);
+                    uploadTask.on(
+                      "state_changed",
+                      (snapshot) => {
+                        const prog = Math.round(
+                          (snapshot.bytesTransferred / snapshot.totalBytes) *
+                            100
+                        );
+                        setProgress(prog);
+                      },
+                      (error) => console.log(error),
+                      () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then(
+                          (downloadURL) => {
+                            console.log("File available at", downloadURL);
+                            setThumbnailUrl(downloadURL);
+                          }
+                        );
+                      }
+                    );
+                  }}
+                />
+
+                <button type="submit">Create</button>
               </Stack>
             </form>
           </List>
