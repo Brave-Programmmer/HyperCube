@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
-import { firestore } from "../firebsae.config";
+import { onAuthStateChanged } from "firebase/auth";
+import { firestore, auth } from "../firebsae.config";
 import { useParams } from "react-router-dom";
 import Video from "../components/Video";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 function Videos() {
   const [loading, setLoading] = useState(true);
+  const [loading1, setLoading1] = useState(true);
+
+  const [userData, setUserData] = useState();
   const [Blogs, setBlogs] = useState([]);
   let { id } = useParams();
   console.log(id);
@@ -14,21 +18,33 @@ function Videos() {
     const myquery = query(colRef, where("slug", "==", id));
     const docSnap = await getDocs(myquery);
     setBlogs(docSnap.docs.map((doc) => ({ ...doc.data() })));
-    console.log(Blogs);
+    // console.log(Blogs);
     setTimeout(() => {
       if (Blogs != null) {
         setLoading(false);
       }
     }, 2000);
   }, []);
-  console.log(Blogs);
+  onAuthStateChanged(auth, async (user) => {
+    const q = query(
+      collection(firestore, "channel"),
+      where("email", "==", user.email)
+    );
 
+    const ch_names = await getDocs(q);
+    setUserData(ch_names.docs.map((doc) => ({ ...doc.data() })));
+    if (userData != null) {
+      setLoading1(false);
+    } else {
+      setLoading1(true);
+    }
+  });
   return (
     <>
       <Box sx={{ width: "100%", height: "100%" }}>
         <Video data={Blogs} />
         <Box sx={{ width: "100%" }}>
-          {/* <Stack
+          <Stack
             direction="row"
             sx={{
               justifyContent: "space-between",
@@ -36,16 +52,18 @@ function Videos() {
               backgroundColor: "rgba(0,0,0,0.2)",
               padding: "20px",
               borderRadius: "10px",
-              
             }}
-
           >
             <Box>
-              <Typography>Channel Name: Brave Programmer</Typography>
-              
+              {loading1 == false ? (
+                userData.map((doc) => {
+                  return <Typography>Channel Name: {doc.ch_name}</Typography>;
+                })
+              ) : (
+                <h1>Loading</h1>
+              )}
             </Box>
-           
-          </Stack> */}
+          </Stack>
         </Box>
       </Box>
     </>

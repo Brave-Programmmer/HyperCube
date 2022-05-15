@@ -57,6 +57,7 @@ function Admin() {
       collection(firestore, "channel"),
       where("email", "==", user.email)
     );
+
     const ch_names = await getDocs(q);
     setUserData(ch_names.docs.map((doc) => ({ ...doc.data() })));
     if (userData != null) {
@@ -86,7 +87,6 @@ function Admin() {
                   <>
                     <Box>
                       <Typography>{doc.ch_name}</Typography>
-                      <Typography>{doc.subs}</Typography>
                     </Box>
                     <Box>
                       <Button
@@ -137,7 +137,7 @@ function Admin() {
                             <CardContent>
                               <Typography
                                 gutterBottom
-                                variant="h5"
+                                variant="h4"
                                 component="div"
                               >
                                 {doc.title}
@@ -197,11 +197,7 @@ function Admin() {
                 const slug = data.get("slug");
                 const video_url = data.get("video_url");
                 const thumbnail_url = data.get("thumbnail_url");
-                // console.log(title);
-                // console.log(slug);
-                // console.log(url);
-                // console.log(email);
-                // console.log(ThumbnailUrl);
+
                 addDoc(collection(firestore, "videos"), {
                   auth: email,
                   slug: slug,
