@@ -33,22 +33,14 @@ import {
 } from "@mui/icons-material";
 function Nav(props) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorElnav, setAnchorElnav] = useState(null);
   const [user, setUser] = useState("");
   const open = Boolean(anchorEl);
-  const navopen = Boolean(anchorEl);
   const history = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-  const handleClickNav = (event) => {
-    setAnchorElnav(event.currentTarget);
-  };
-  const handleCloseNav = () => {
-    setAnchorElnav(null);
   };
   onAuthStateChanged(auth, (user) => {
     setUser(user);
@@ -61,103 +53,133 @@ function Nav(props) {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-              aria-haspopup="true"
-            >
-              <MenuIcon
-                aria-controls={navopen ? "account-menu" : undefined}
-                onClick={handleClickNav}
-                aria-expanded={navopen ? "true" : undefined}
-                size="small"
-              />
-              <Menu
-                anchorEl={anchorElnav}
-                id="account-menu"
-                open={navopen}
-                onClose={handleCloseNav}
-                onClick={handleCloseNav}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      mr: -0.5,
-                      ml: 1,
-                    },
-                    "&:before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      left: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              PaperProps={{
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    mr: -0.5,
+                    ml: 1,
                   },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <MenuItem>
-                  <Home sx={{ marginRight: "10px" }} />{" "}
-                  <Link to="/">
-                    <Typography
-                      color={props.darkMode == true ? "white" : "darkgray"}
-                    >
-                      Home
-                    </Typography>
-                  </Link>
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                  <TrendingUp sx={{ marginRight: "10px" }} />{" "}
-                  <Link to="/Trending">
-                    <Typography
-                      color={props.darkMode == true ? "white" : "darkgray"}
-                    >
-                      Trending
-                    </Typography>
-                  </Link>
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                  <ListItemIcon>
-                    <Subscriptions />
-                  </ListItemIcon>
-                  <Link to="/Subscriptions">
-                    <Typography
-                      color={props.darkMode == true ? "white" : "darkgray"}
-                    >
-                      Subscriptions
-                    </Typography>
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <ListItemIcon>
-                    <Info />
-                  </ListItemIcon>
-                  <Link to="/about">
-                    <Typography
-                      color={props.darkMode == true ? "white" : "darkgray"}
-                    >
-                      About
-                    </Typography>
-                  </Link>
-                </MenuItem>
-              </Menu>
-            </IconButton>
+                  "&:before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    left: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: "right", vertical: "top" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              {user != null ? (
+                <>
+                  <MenuItem>
+                    <Home sx={{ marginRight: "10px" }} />{" "}
+                    <Link to="/">
+                      <Typography
+                        color={props.darkMode == true ? "white" : "darkgray"}
+                      >
+                        Home
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem>
+                    <TrendingUp sx={{ marginRight: "10px" }} />{" "}
+                    <Link to="/Trending">
+                      <Typography
+                        color={props.darkMode == true ? "white" : "darkgray"}
+                      >
+                        Trending
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Subscriptions />
+                    </ListItemIcon>
+                    <Link to="/Subscriptions">
+                      <Typography
+                        color={props.darkMode == true ? "white" : "darkgray"}
+                      >
+                        Subscriptions
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <ListItemIcon>
+                      <Info />
+                    </ListItemIcon>
+                    <Link to="/about">
+                      <Typography
+                        color={props.darkMode == true ? "white" : "darkgray"}
+                      >
+                        About
+                      </Typography>
+                    </Link>
+                  </MenuItem>
+                  <Divider />
+                  {/* <MenuItem>
+                      <ListItemIcon>
+                        <Settings fontSize="small" />
+                      </ListItemIcon>
+                      Settings
+                    </MenuItem> */}
+                  <MenuItem
+                    onClick={() => {
+                      signOut(auth)
+                        .then(() => {
+                          toast.success("🦄 Logged out sucessfully", {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                          });
+                        })
+                        .catch((error) => {
+                          toast.error("🦄 Logout failed", {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                          });
+                        });
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Logout fontSize="small" />
+                    </ListItemIcon>
+                    Logout
+                  </MenuItem>{" "}
+                </>
+              ) : (
+                <h1></h1>
+              )}
+            </Menu>
             {/* Brand Name starts */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               HyperCube
@@ -196,91 +218,10 @@ function Nav(props) {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                     >
-                      <Avatar sx={{ width: 32, height: 32 }}>H</Avatar>
+                      <Avatar sx={{ width: 32, height: 32 }}>B</Avatar>
                     </IconButton>
                   </Tooltip>
                 </Box>
-                <Menu
-                  anchorEl={anchorEl}
-                  id="account-menu"
-                  open={open}
-                  onClose={handleClose}
-                  onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                      mt: 1.5,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  <MenuItem>
-                    <Avatar /> Profile
-                  </MenuItem>
-                  <MenuItem>
-                    <Avatar /> My account
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem>
-                    <ListItemIcon>
-                      <Settings fontSize="small" />
-                    </ListItemIcon>
-                    Settings
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      signOut(auth)
-                        .then(() => {
-                          toast.success("🦄 Logged out sucessfully", {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                          });
-                        })
-                        .catch((error) => {
-                          toast.error("🦄 Logout failed", {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                          });
-                        });
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
-                  </MenuItem>
-                </Menu>
               </>
             ) : (
               <Button variant="contained">
