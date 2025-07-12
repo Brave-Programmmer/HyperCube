@@ -32,7 +32,7 @@
 
 ```bash
 # Clone this repository
-git clone https://github.com/your-username/hypercube.git
+git clone https://github.com/Brave-Programmmer/hypercube.git
 cd hypercube
 
 # Install dependencies
