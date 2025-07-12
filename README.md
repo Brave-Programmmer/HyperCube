@@ -43,4 +43,4 @@ cp .env.example .env
 # Add your Firebase or backend config
 
 # Start development server
-npm run dev
+npm start
